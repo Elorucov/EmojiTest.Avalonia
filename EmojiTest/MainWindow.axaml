@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="EmojiTest.MainWindow"
+        Title="EmojiTest">
+  <Grid RowDefinitions="* Auto">
+    <ScrollViewer Width="384">
+      <ItemsControl x:Name="emojiList">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel>
+              <TextBlock Text="{Binding Key}"/>
+              <ItemsControl Items="{Binding}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel ItemWidth="24" ItemHeight="24"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border>
+                      <TextBlock FontSize="16" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding}" Loaded="TextBlockLoaded"/>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+    <Slider x:Name="fontSize" Grid.Row="1" Width="384" Minimum="12" Maximum="24" Value="16" ToolTip.Tip="{Binding Value, ElementName=fontSize}" ToolTip.Placement="Top" TickPlacement="Outside"/>
+  </Grid>
+</Window>
