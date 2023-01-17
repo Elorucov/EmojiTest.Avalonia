@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using NeoSmart.Unicode;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace EmojiTest {
     public partial class MainWindow : Window {
@@ -12,7 +13,14 @@ namespace EmojiTest {
         }
 
         private void MainWindow_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e) {
-            var groupedEmojis = Emoji.Basic.GroupBy(e => e.Group).ToList();
+            var flagsEmojis = Emoji.All.Where(e => e.Group == "Flags");
+            var basicEmojis = Emoji.Basic;
+            basicEmojis.RemoveWhere(e => e.Group == "Flags");
+            foreach (var emoji in flagsEmojis) {
+                basicEmojis.Add(emoji);
+            }
+
+            var groupedEmojis = basicEmojis.GroupBy(e => e.Group).ToList();
             emojiList.Items = groupedEmojis;
         }
 
