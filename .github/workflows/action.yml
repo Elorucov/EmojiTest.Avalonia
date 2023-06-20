@@ -26,7 +26,7 @@ jobs:
         shell: pwsh
         run: |
           $projfolder = Get-Location;
-          $file = "$($projfolder)/EmojiTest.Avalonia.csproj";
+          $file = "$($projfolder)/EmojiTest.csproj";
           [xml]$proj = Get-Content -Path $($file);
           $version = $proj.Project.FirstChild.AssemblyVersion;
           echo "version=$($version)" >> "$GITHUB_ENV";
