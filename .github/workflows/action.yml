@@ -1,0 +1,41 @@
+name: Build app (Windows)
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  DOTNET_VERSION: '7.0.x'
+
+jobs:
+  build:
+    name: Test powershell
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Checking and printing version
+        shell: pwsh
+        run: |
+          $projfolder = Get-Location;
+          $file = "$($projfolder)/GHActionsTest.csproj";
+          [xml]$proj = Get-Content -Path $($file);
+          $version = $proj.Project.FirstChild.AssemblyVersion;
+          echo "version=$($version)" >> "$GITHUB_ENV";
+          echo "Version: $($version)";
+      - name: Setting channel to RELEASE
+        if: ${{ github.ref == 'refs/heads/production' }}
+        run: echo "channel=RELEASE" >> "$GITHUB_ENV" 
+      - name: Setting channel to BETA
+        if: ${{ github.ref == 'refs/heads/beta' }}
+        run: echo "channel=BETA" >> "$GITHUB_ENV"
+      - name: Printing branch
+        run: echo 'Channel: ${{ env.channel }}'
