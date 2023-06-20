@@ -38,4 +38,4 @@ jobs:
         if: ${{ github.ref == 'refs/heads/beta' }}
         run: echo "channel=BETA" >> "$GITHUB_ENV"
       - name: Printing branch
-        run: echo 'Channel: ${{ env.channel }}'
+        run: echo "$GITHUB_CONTEXT.channel"
